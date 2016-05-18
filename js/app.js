@@ -82,13 +82,34 @@ var getUnanswered = function(tags) {
 };
 
 
-$(document).ready( function() {
-	$('.unanswered-getter').submit( function(e){
-		e.preventDefault();
-		// zero out results if previous search has run
-		$('.results').html('');
-		// get the value of the tags the user submitted
-		var tags = $(this).find("input[name='tags']").val();
-		getUnanswered(tags);
-	});
+var getTopRepliers = function (tag) {
+    fetch("http://api.stackexchange.com/2.2/tags/" + tag +
+            "/top-answerers/all_time?site=stackoverflow", {
+        method: "GET"
+    }).then(function (response) {
+        return response.json()
+    }).then(function (data) {
+        for (let item of data.items) {
+            console.log(item.user.display_name)
+        }
+    }).catch(function (err) {
+        console.log(err);
+    })
+}
+
+var submitNewQuery = function (e, frm, func, type) {
+    e.preventDefault();
+    $('.results').html('');
+		var tags = $(frm).find("input[name=" + type + "]").val();
+    func(tags);
+}
+
+$(document).ready(function () {
+    $('.unanswered-getter').submit(function (e) {
+        submitNewQuery(e, this, getUnanswered, 'tags');
+    });
+
+    $('.inspiration-getter').on('submit', function (e) {
+        submitNewQuery(e, this, getTopRepliers, 'answerers')
+    });
 });
