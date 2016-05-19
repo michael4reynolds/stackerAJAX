@@ -31,6 +31,9 @@ var showQuestion = function(question) {
 	return result;
 };
 
+var showUser = function(item) {
+    return `<div class="result">${item.user.display_name}</div>`
+}
 
 // this function takes the results object from StackOverflow
 // and returns the number of results and tags to be appended to DOM
@@ -89,8 +92,13 @@ var getTopRepliers = function (tag) {
 	}).then(function (response) {
 			return response.json()
 	}).then(function (data) {
+            var searchResults = showSearchResults(tag, data.items.length);
+			$('.search-results').html(searchResults);
+            
 			for (let item of data.items) {
 					console.log(item.user.display_name)
+                    let user = showUser(item)
+                    $('.results').append(user)
 			}
 	}).catch(function (err) {
 			console.log(err);
