@@ -32,7 +32,22 @@ var showQuestion = function(question) {
 };
 
 var showUser = function(item) {
-    return `<div class="result">${item.user.display_name}</div>`
+    let result = $('.templates .question2').clone()    
+    let user = item.user
+    
+    result.find('a').attr({
+        href: user.link,
+        target: '_blank' 
+    })
+    result.find('img').attr({
+        src: user.profile_image, 
+        alt: 'profile image'})
+    result.find('.name').html(user.display_name)
+    result.find('.reputation').text(user.reputation)
+    result.find('.rate').text(user.accept_rate)
+    result.find('.count').text(item.post_count)  
+      
+    return result
 }
 
 // this function takes the results object from StackOverflow
@@ -65,7 +80,7 @@ var getUnanswered = function(tags) {
 		url: "http://api.stackexchange.com/2.2/questions/unanswered",
 		data: request,
 		dataType: "jsonp",//use jsonp to avoid cross origin issues
-		type: "GET",
+		type: "GET"
 	})
 	.done(function(result){ //this waits for the ajax to return with a succesful promise object
 		var searchResults = showSearchResults(request.tagged, result.items.length);
@@ -96,7 +111,6 @@ var getTopRepliers = function (tag) {
 			$('.search-results').html(searchResults);
             
 			for (let item of data.items) {
-					console.log(item.user.display_name)
                     let user = showUser(item)
                     $('.results').append(user)
 			}
