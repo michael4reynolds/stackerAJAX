@@ -46,12 +46,11 @@
 	padding: 1em;
 }
 
-.question2 {
+.top-repliers {
     display: flex;
-    align-items: center;
-    min-height: 152px;
+    flex-wrap: wrap;
 }
 
-.question2 > * {
-	margin: 0 10px;
+.img-container  {
+    text-align: center;
 }

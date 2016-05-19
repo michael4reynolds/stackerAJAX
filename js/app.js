@@ -42,10 +42,10 @@ var showUser = function(item) {
     result.find('img').attr({
         src: user.profile_image, 
         alt: 'profile image'})
-    result.find('.name').html(user.display_name)
-    result.find('.reputation').text(user.reputation)
-    result.find('.rate').text(user.accept_rate)
-    result.find('.count').text(item.post_count)  
+    result.find('.name').html(`${user.display_name}`)
+    result.find('.reputation').text(`Rep: ${user.reputation}`)
+    result.find('.rate').text(`Rate: ${user.accept_rate}`)
+    result.find('.count').text(`Posts: ${item.post_count}`)  
       
     return result
 }
@@ -110,9 +110,10 @@ var getTopRepliers = function (tag) {
             var searchResults = showSearchResults(tag, data.items.length);
 			$('.search-results').html(searchResults);
             
+            $('.results').append('<div class="top-repliers">')
 			for (let item of data.items) {
                     let user = showUser(item)
-                    $('.results').append(user)
+                    $('.top-repliers').append(user)
 			}
 	}).catch(function (err) {
 			console.log(err);
